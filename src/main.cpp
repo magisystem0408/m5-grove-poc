@@ -12,8 +12,9 @@ void setup() {
 } 
 
 void loop() {
-  M5.Lcd.setTextFont(1);
-  M5.Lcd.setCursor(0, 0, 2);
+  M5.update();
+  M5.Lcd.setTextFont(2);
+  M5.Lcd.setCursor(0, 0);
   M5.Lcd.fillScreen(BLACK);
   M5.Lcd.println("GPS sample");
   while(GPSRaw.available() > 0) { 
@@ -21,11 +22,16 @@ void loop() {
       break;
     }
   }
+
   if(gps.location.isValid()) {
     M5.Lcd.printf("lat:%.4f\n", gps.location.lat() );
     M5.Lcd.printf("lng:%.4f\n", gps.location.lng() );
   } else {
     M5.Lcd.println("invalid location");
   }
+
+  M5.Lcd.printf("Satellites: %d\n", gps.satellites.value());
+  M5.Lcd.printf("HDOP: %.1f\n", gps.hdop.hdop());
+  M5.Lcd.printf("Altitude: %.2f\n", gps.altitude.meters());
   delay(3000);
 }
